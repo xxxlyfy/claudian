@@ -1,16 +1,43 @@
 /*
- * Composer info row: read-only conversation facts attached under the input box.
- * The toolbar inside the box holds only what the user can change.
+ * Composer info row: read-only conversation facts. It parks on the footer's navigation
+ * row at the input box's top-left, level with the navigation actions, so the box stays at
+ * the bottom of the view. The toolbar inside the box holds only what the user can change.
  */
 .claudian-input-info-row {
+  position: absolute;
+  /* The navigation row is one 24px control plus 6px padding above the input box. */
+  top: -30px;
+  left: 0;
+  right: auto;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 12px;
+  box-sizing: border-box;
+  width: auto;
+  max-width: 180px;
   min-width: 0;
   height: 24px;
   padding: 2px 8px 0 12px;
   color: var(--text-muted);
   font-size: 12px;
+}
+
+/*
+ * Keep the facts row's width free in the navigation row so tab badges and the side-chat
+ * chip never sit under it. The row caps at 180px; 188px leaves an 8px gap.
+ */
+.claudian-input-footer:has(.claudian-input-info-row .claudian-input-info-linked-main) .claudian-input-nav-content {
+  padding-left: 188px;
+}
+
+/*
+ * With no facts, the row collapses so it neither paints nor covers the navigation row.
+ * A project or Linked content chip grows it back to one 24px line.
+ */
+.claudian-input-info-row:not(:has(.claudian-input-info-linked > *)) {
+  height: 0;
+  padding: 0;
 }
 
 .claudian-input-info-linked {

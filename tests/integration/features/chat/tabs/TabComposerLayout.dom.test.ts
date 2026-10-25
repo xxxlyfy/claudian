@@ -74,7 +74,7 @@ async function createTab(linkedContentPath?: string): Promise<AssembledTabRuntim
 }
 
 function infoRowOf(tab: AssembledTabRuntime): HTMLElement {
-  // The info row is the composer's last row, directly under the bordered input box.
+  // The info row is the composer's last row; CSS parks it on the footer's navigation row.
   const row = tab.dom.inputWrapper.nextElementSibling as HTMLElement | null;
   expect(row?.parentElement).toBe(tab.dom.inputContainerEl);
   return row!;
@@ -121,7 +121,7 @@ it('attaches a queued follow-up to the top of the input box, under the tab bar',
   }
 });
 
-it('shows the linked note in an info row under the input box', async () => {
+it('shows the linked note in the composer info row', async () => {
   const tab = await createTab(note.path);
   try {
     const row = infoRowOf(tab);
@@ -144,7 +144,7 @@ it('shows the linked note in an info row under the input box', async () => {
 it('shows context usage in the toolbar next to the model picker', async () => {
   const tab = await createTab();
   try {
-    // Without a linked note the row still holds its place, so the composer does not shift.
+    // Without a linked note the row is empty and collapsed, leaving the nav row clear.
     const row = infoRowOf(tab);
     expect(row.classList.contains('claudian-hidden')).toBe(false);
 

@@ -17,10 +17,11 @@ export interface ComposerInfoItem {
 }
 
 /**
- * Owns the borderless row under the input box. The toolbar holds what the user can
- * change; this row shows conversation facts: the project (its chip opens a menu to change it),
- * then Linked content. It keeps its height while empty so the composer does not shift as
- * facts come and go.
+ * Owns the borderless row of conversation facts. CSS parks it on the footer's navigation
+ * row, at the input box's top-left and level with the navigation actions, so the box stays
+ * at the bottom of the view. The toolbar holds what the user can change; this row shows the
+ * project (its chip opens a menu to change it), then Linked content. It collapses while
+ * empty so it never covers the navigation row, and grows back when a fact appears.
  */
 export class ComposerInfoRow {
   private readonly linkedSlotEl: HTMLElement;

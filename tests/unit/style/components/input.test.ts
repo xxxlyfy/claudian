@@ -55,9 +55,9 @@ describe('Composer input styles', () => {
     const wrapper = style(composer.querySelector('.claudian-input-wrapper')!);
     expect(['', '0', '0px', 'auto']).toContain(wrapper.minHeight);
     expect(wrapper.flexDirection).toBe('column');
-    // About two lines of text before the toolbar.
-    expect(style(composer.querySelector('.claudian-composer-editor')!).minHeight).toBe('48px');
-    expect(style(composer.querySelector('.cm-content')!).minHeight).toBe('48px');
+    // About three lines of text before the toolbar.
+    expect(style(composer.querySelector('.claudian-composer-editor')!).minHeight).toBe('72px');
+    expect(style(composer.querySelector('.cm-content')!).minHeight).toBe('72px');
   });
 
   it('lays a wrapped hint out inline, so the caret beside it stays one line tall', () => {
@@ -123,5 +123,13 @@ describe('Composer input styles', () => {
     const row = composer.querySelector<HTMLElement>('.claudian-input-info-row')!;
     expect(style(row).display).toBe('flex');
     expect(style(row).borderStyle).toBe('');
+  });
+
+  it('parks the info row on the navigation line at the input box top-left', () => {
+    const row = renderComposer().querySelector<HTMLElement>('.claudian-input-info-row')!;
+    // jsdom cannot lay out the footer; it can check the declarations that place the row there.
+    expect(style(row).position).toBe('absolute');
+    expect(style(row).top).toBe('-30px');
+    expect(style(row).left).toBe('0px');
   });
 });

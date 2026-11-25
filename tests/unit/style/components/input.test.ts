@@ -32,6 +32,9 @@ describe('Composer input styles', () => {
           <div class="claudian-input-wrapper">
             <div class="claudian-input-queue-strip claudian-hidden"></div>
             <div class="claudian-context-row"></div>
+            <div class="claudian-input-info-row">
+              <div class="claudian-input-info-linked"></div>
+            </div>
             <div class="claudian-composer-editor"><div class="cm-content"></div></div>
             <div class="claudian-input-toolbar">
               <div class="claudian-toolbar-chip-anchor claudian-toolbar-chip-anchor--model"></div>
@@ -39,9 +42,6 @@ describe('Composer input styles', () => {
                 <div class="claudian-toolbar-popover"></div>
               </div>
             </div>
-          </div>
-          <div class="claudian-input-info-row">
-            <div class="claudian-input-info-linked"></div>
           </div>
         </div>
       </div>
@@ -56,9 +56,9 @@ describe('Composer input styles', () => {
     const wrapper = style(composer.querySelector('.claudian-input-wrapper')!);
     expect(['', '0', '0px', 'auto']).toContain(wrapper.minHeight);
     expect(wrapper.flexDirection).toBe('column');
-    // About two lines of text before the toolbar.
-    expect(style(composer.querySelector('.claudian-composer-editor')!).minHeight).toBe('48px');
-    expect(style(composer.querySelector('.cm-content')!).minHeight).toBe('48px');
+    // About five lines of text before the toolbar.
+    expect(style(composer.querySelector('.claudian-composer-editor')!).minHeight).toBe('96px');
+    expect(style(composer.querySelector('.cm-content')!).minHeight).toBe('96px');
   });
 
   it('lays a wrapped hint out inline, so the caret beside it stays one line tall', () => {

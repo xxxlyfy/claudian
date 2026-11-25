@@ -1,16 +1,22 @@
 /*
- * Composer info row: read-only conversation facts attached under the input box.
- * The toolbar inside the box holds only what the user can change.
+ * Composer info row: read-only conversation facts inside the top of the input box,
+ * above the text and inset like the attachment chips. The toolbar inside the box
+ * holds only what the user can change.
  */
 .claudian-input-info-row {
   display: flex;
   align-items: center;
+  flex: 0 0 auto;
   gap: 12px;
   min-width: 0;
-  height: 24px;
-  padding: 2px 8px 0 12px;
+  padding: 8px 8px 0;
   color: var(--text-muted);
   font-size: calc(12 * var(--claudian-font-px));
+}
+
+/* Collapsed while empty, so an idle composer does not reserve a blank band above the text. */
+.claudian-input-info-row--empty {
+  display: none;
 }
 
 .claudian-input-info-linked {

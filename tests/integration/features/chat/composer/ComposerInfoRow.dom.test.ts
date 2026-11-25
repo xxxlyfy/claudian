@@ -69,15 +69,21 @@ it('keeps missing linked content visible and marked', async () => {
   row.destroy();
 });
 
-it('keeps reserving its row while there is no linked note', () => {
+it('collapses while it has no facts to show, so the composer keeps its idle height', () => {
   const { row, rowEl } = mount();
-  expect(rowEl.classList.contains('claudian-hidden')).toBe(false);
+  expect(rowEl.classList.contains('claudian-input-info-row--empty')).toBe(true);
 
   row.setLinkedContent({ label: 'Plan', ariaLabel: 'Linked content: Notes/Plan.md', onActivate: vi.fn() });
   expect(within(rowEl).getByRole('button', { name: 'Linked content: Notes/Plan.md' })).toBeDefined();
+  expect(rowEl.classList.contains('claudian-input-info-row--empty')).toBe(false);
 
+  // A project fact keeps the row open on its own.
   row.setLinkedContent(null);
-  expect(rowEl.classList.contains('claudian-hidden')).toBe(false);
+  row.setProject({ label: 'Launch', icon: 'folder', ariaLabel: 'Project: Launch', onActivate: vi.fn() });
+  expect(rowEl.classList.contains('claudian-input-info-row--empty')).toBe(false);
+
+  row.setProject(null);
+  expect(rowEl.classList.contains('claudian-input-info-row--empty')).toBe(true);
   expect(within(rowEl).queryByRole('button')).toBeNull();
   row.destroy();
 });

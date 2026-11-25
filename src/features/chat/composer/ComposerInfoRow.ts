@@ -17,10 +17,10 @@ export interface ComposerInfoItem {
 }
 
 /**
- * Owns the borderless row under the input box. The toolbar holds what the user can
- * change; this row shows conversation facts: the project (its chip opens a menu to change it),
- * then Linked content. It keeps its height while empty so the composer does not shift as
- * facts come and go.
+ * Owns the row of conversation facts inside the top of the input box: the project
+ * (its chip opens a menu to change it), then Linked content. The toolbar holds what
+ * the user can change. The row collapses while it has no facts to show, so an empty
+ * composer keeps its idle height.
  */
 export class ComposerInfoRow {
   private readonly linkedSlotEl: HTMLElement;
@@ -32,6 +32,7 @@ export class ComposerInfoRow {
       cls: 'claudian-input-info-linked claudian-input-info-project',
     });
     this.linkedSlotEl = this.containerEl.createDiv({ cls: 'claudian-input-info-linked' });
+    this.#syncEmptyState();
   }
 
   setLinkedContent(item: ComposerInfoItem | null): void {
@@ -55,7 +56,10 @@ export class ComposerInfoRow {
       : null;
     slotEl.empty();
     slotEl.toggleClass('claudian-input-info-linked--missing', item?.missing === true);
-    if (!item) return;
+    if (!item) {
+      this.#syncEmptyState();
+      return;
+    }
     const label = item.ariaLabel ?? item.label;
     const mainEl = slotEl.createEl('button', {
       cls: 'claudian-input-info-linked-main',
@@ -81,5 +85,12 @@ export class ComposerInfoRow {
       removeEl.addEventListener('click', item.onRemove);
     }
     if (focusClass) slotEl.querySelector<HTMLElement>(`.${focusClass}`)?.focus({ preventScroll: true });
+    this.#syncEmptyState();
+  }
+
+  /** Collapses the row so the composer's box does not reserve a blank band above the text. */
+  #syncEmptyState(): void {
+    const empty = this.projectSlotEl.childElementCount === 0 && this.linkedSlotEl.childElementCount === 0;
+    this.containerEl.toggleClass('claudian-input-info-row--empty', empty);
   }
 }

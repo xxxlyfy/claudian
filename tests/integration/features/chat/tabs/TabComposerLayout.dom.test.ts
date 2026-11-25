@@ -81,10 +81,8 @@ async function createTab(linkedContentPath?: string): Promise<AssembledTabRuntim
 }
 
 function infoRowOf(tab: AssembledTabRuntime): HTMLElement {
-  // The info row is the composer's last row, directly under the bordered input box.
-  const row = tab.dom.inputWrapper.nextElementSibling as HTMLElement | null;
-  expect(row?.parentElement).toBe(tab.dom.inputContainerEl);
-  return row!;
+  // Conversation facts sit inside the top of the bordered input box, above the text.
+  return tab.dom.inputWrapper.querySelector<HTMLElement>(':scope > .claudian-input-info-row')!;
 }
 
 const usage = (percentage: number): UsageInfo => ({
@@ -222,7 +220,7 @@ it.each(['Edit queued message', 'Discard queued message'])(
   },
 );
 
-it('shows the linked note in an info row under the input box', async () => {
+it('shows the linked note inside the top of the input box', async () => {
   const tab = await createTab(note.path);
   try {
     const row = infoRowOf(tab);
@@ -231,8 +229,10 @@ it('shows the linked note in an info row under the input box', async () => {
     expect(linked.textContent).toBe('Plan');
     // Locked after the first message: shown, activatable, not removable.
     expect(info.queryByRole('button', { name: /^Remove/ })).toBeNull();
-    // The in-box tray is left to per-turn context.
-    expect(within(tab.dom.inputWrapper).queryByRole('button', { name: /Linked content/ })).toBeNull();
+    // Inside the box and above the text; the context row stays for per-turn context.
+    expect(row.parentElement).toBe(tab.dom.inputWrapper);
+    expect(row.compareDocumentPosition(tab.dom.inputEl) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(tab.dom.contextRowEl).queryByRole('button', { name: /Linked content/ })).toBeNull();
 
     tab.state.usage = usage(42);
     expect(info.queryByRole('progressbar')).toBeNull();
@@ -245,16 +245,15 @@ it('shows the linked note in an info row under the input box', async () => {
 it('shows context usage in the toolbar next to the model picker', async () => {
   const tab = await createTab();
   try {
-    // Without a linked note the row still holds its place, so the composer does not shift.
-    const row = infoRowOf(tab);
-    expect(row.classList.contains('claudian-hidden')).toBe(false);
+    // Without conversation facts the info row collapses, so it takes no space above the text.
+    expect(infoRowOf(tab).classList.contains('claudian-input-info-row--empty')).toBe(true);
 
     tab.state.usage = usage(42);
     const toolbar = tab.dom.inputWrapper.querySelector<HTMLElement>(':scope > .claudian-input-toolbar')!;
     const meter = within(toolbar).getByRole('progressbar', { name: 'Context usage: 42% · 84k / 200k' });
     const modelAnchor = toolbar.querySelector('.claudian-toolbar-chip-anchor--model');
     expect(modelAnchor?.nextElementSibling).toBe(meter);
-    expect(within(row).queryByRole('progressbar')).toBeNull();
+    expect(within(infoRowOf(tab)).queryByRole('progressbar')).toBeNull();
   } finally {
     await destroyTab(tab);
   }

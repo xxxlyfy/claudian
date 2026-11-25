@@ -1,9 +1,6 @@
 # Build output
 /main.js
 /styles.css
-# 本地复刻：产物一并提交，便于直接从本仓库安装（见 docs/local-changes.md）
-!/main.js
-!/styles.css
 /dist/
 /build/
 *.js.map

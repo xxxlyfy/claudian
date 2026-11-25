@@ -29,8 +29,9 @@ npm install
 npm run build        # 生成 main.js、styles.css
 ```
 
-产物已一并提交，可以直接把 `main.js`、`manifest.json`、`styles.css` 放进
-`.obsidian/plugins/claudian/`，也可以交给 BRAT 从本仓库安装。
+产物不进版本库，统一发布在发布页：<https://github.com/xxxlyfy/claudian/releases>。
+安装时把 `main.js`、`manifest.json`、`styles.css` 放进 `.obsidian/plugins/claudian/`，
+也可以交给 BRAT 从本仓库安装（它会取最新发布里的附件）。
 
 ## 与上游同步时注意
 

@@ -47,6 +47,15 @@ npm run build        # 生成 main.js、styles.css
 安装时把 `main.js`、`manifest.json`、`styles.css` 放进 `.obsidian/plugins/claudian/`，
 也可以交给 BRAT 从本仓库安装（它会取最新发布里的附件）。
 
+## 版本号规则
+
+发布标签的版本号与 `manifest.json` 的 `version` 必须**完全相同**，否则 BRAT 会提示
+「版本不一致」并把 manifest 改写成标签版本。规则：
+
+- 每次发布都用一个新的递增版本号（三段，如 `2.3.50`），manifest 与标签同步改；
+- 当前版本：`2.3.49`；
+- 不要使用 `2.3.48-local.1` 这类带后缀的写法，BRAT 会把它当作预发布版本处理。
+
 ## 上游更新时如何保留这些改动
 
 操作者只需要说一句，例如「同步上游，保留我的改动」。执行者按下面步骤操作。
@@ -61,10 +70,10 @@ npm run build        # 生成 main.js、styles.css
 5. 重新构建：`npm install && npm run build`
 6. 复制 `main.js`、`manifest.json`、`styles.css` 到
    `C:\Users\zcooo\OneDrive\Obsidian\.obsidian\plugins\claudian\`。
-7. 打新标签并推送（rebase 后历史被整理，需要覆盖远端）：
-   `git tag -a 2.3.48-local.N -m "同步上游后的本地改动版"`
+7. 打新标签并推送（rebase 后历史被整理，需要覆盖远端；版本号按上面的规则递增）：
+   `git tag -a 2.3.50 -m "同步上游后的本地改动版"`
    `git push --force-with-lease origin main`
-   `git push origin 2.3.48-local.N`
+   `git push origin 2.3.50`
 8. 在发布页新建对应的发布，上传三个附件。
 9. 重载 Obsidian（`Ctrl+R`），确认输入框高度、标签位置、字号下限三处仍然生效。
 

@@ -307,7 +307,8 @@ export class ClaudianSettingTab extends PluginSettingTab {
       .setDesc(t('settings.chatFontScale.desc'))
       .addSlider((slider) => {
         // Percentages of the note font size; the slider commits on release.
-        slider.setLimits(80, 120, 5).setDynamicTooltip();
+        // The floor is low because vaults with a large note font need well under 80% to read as small.
+        slider.setLimits(40, 120, 5).setDynamicTooltip();
         bindCommittedControl(slider, () => this.host.settings.chatFontScale, async value => {
           await this.host.mutateSettings(settings => { settings.chatFontScale = value; });
         });

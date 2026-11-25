@@ -54,7 +54,7 @@ it('scales chat text in every window from the committed slider value until unloa
   const tab = new ClaudianSettingTab(fixture.host.app, createObsidianPlugin(fixture.host.app), fixture.host);
   onTestFinished(mountSettingTab(tab, container));
   const slider = within(container).getByRole<HTMLInputElement>('slider', { name: t('settings.chatFontScale.name') });
-  expect(slider).toMatchObject({ min: '80', max: '120', step: '5', value: '90' });
+  expect(slider).toMatchObject({ min: '40', max: '120', step: '5', value: '90' });
 
   fireEvent.change(slider, { target: { value: '110' } });
   await controlChangeSettled(slider);
